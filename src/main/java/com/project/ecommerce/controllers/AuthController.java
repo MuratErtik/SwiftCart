@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.project.ecommerce.domain.USER_ROLE;
-import com.project.ecommerce.repository.UserRepository;
 import com.project.ecommerce.responses.AuthResponse;
 import com.project.ecommerce.responses.SignupRequest;
 import com.project.ecommerce.services.AuthService;
@@ -19,7 +18,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class AuthController {
 
-    private final UserRepository userRepository;
     private final AuthService authService;
 
     @PostMapping("signup")
