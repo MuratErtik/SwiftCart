@@ -6,9 +6,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.project.ecommerce.entities.User;
+import com.project.ecommerce.domain.USER_ROLE;
 import com.project.ecommerce.repository.UserRepository;
+import com.project.ecommerce.responses.AuthResponse;
 import com.project.ecommerce.responses.SignupRequest;
+import com.project.ecommerce.services.AuthService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -18,19 +20,21 @@ import lombok.RequiredArgsConstructor;
 public class AuthController {
 
     private final UserRepository userRepository;
+    private final AuthService authService;
 
     @PostMapping("signup")
-    public ResponseEntity<User> createUserHandler(@RequestBody SignupRequest signupRequest){
+    public ResponseEntity<AuthResponse> createUserHandler(@RequestBody SignupRequest signupRequest) {
 
-        User user = new User();
-        
-        user.setEmail(signupRequest.getEmail());
+        String jwt = authService.createUser(signupRequest);
+        AuthResponse authResponse = new AuthResponse();
 
-        user.setFullName(signupRequest.getFullName());
+        authResponse.setJwt(jwt);
 
-        User userToSave= userRepository.save(user);
+        authResponse.setMessage("Registered Successfully");
 
-        return ResponseEntity.ok(userToSave);
+        authResponse.setRole(USER_ROLE.ROLE_CUSTOMER);
+
+        return ResponseEntity.ok(authResponse);
 
     }
 }
