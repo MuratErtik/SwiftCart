@@ -35,25 +35,24 @@ public class AuthService {
     private final VerificationRepository verificationRepository;
     private final EmailService emailService;
 
-
-    public void sentLoginOtp(String email) throws Exception{
-        String SIGNING_PREFIX="signin_";
+    public void sentLoginOtp(String email) throws Exception {
+        String SIGNING_PREFIX = "signin_";
 
         if (email.startsWith(SIGNING_PREFIX)) {
-            email=email.substring(SIGNING_PREFIX.length());
+            email = email.substring(SIGNING_PREFIX.length());
 
             User user = userRepository.findByEmail(email);
 
-            if (user==null) {
+            if (user == null) {
                 throw new Exception("user not exist  with provided email!");
             }
         }
         Verification isExist = verificationRepository.findByEmail(email);
 
-        if (isExist!=null) {
+        if (isExist != null) {
 
             verificationRepository.delete(isExist);
-            
+
         }
         String otp = OtpUtil.generateOtp();
 
@@ -62,9 +61,9 @@ public class AuthService {
         verification.setEmail(email);
         verificationRepository.save(verification);
 
-        String subject = "X login/signup otp "; //it ll be change!
+        String subject = "X Login/Signup One Time Password "; // it ll be change!
 
-        String text = "your otp is - "+otp;
+        String text = "your otp is - " + otp;
 
         emailService.sendVerificationOtpMail(email, otp, subject, text);
 
@@ -74,7 +73,7 @@ public class AuthService {
 
         Verification verification = verificationRepository.findByEmail(request.getEmail());
 
-        if (verification==null || !verification.getOtp().equals(request.getOtp())) {
+        if (verification == null || !verification.getOtp().equals(request.getOtp())) {
             throw new Exception("Wrong otp!");
         }
 
@@ -102,7 +101,7 @@ public class AuthService {
         }
 
         List<GrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority(USER_ROLE.ROLE_CUSTOMER.toString())); //user.getRole().toString())
+        authorities.add(new SimpleGrantedAuthority(USER_ROLE.ROLE_CUSTOMER.toString())); // user.getRole().toString())
         Authentication authentication = new UsernamePasswordAuthenticationToken(request.getEmail(), null, authorities);
         SecurityContextHolder.getContext().setAuthentication(authentication);
         return jwtProvider.generateToken(authentication);
