@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.project.ecommerce.domain.USER_ROLE;
 import com.project.ecommerce.entities.Verification;
+import com.project.ecommerce.requests.LoginRequest;
 import com.project.ecommerce.responses.ApiResponse;
 import com.project.ecommerce.responses.AuthResponse;
 import com.project.ecommerce.responses.SignupRequest;
@@ -47,6 +48,15 @@ public class AuthController {
         apiResponse.setMessage("Opt sent successfully!");
 
         return ResponseEntity.ok(apiResponse);
+
+    }
+
+    @PostMapping("/signing")
+    public ResponseEntity<AuthResponse> loginHandler(@RequestBody LoginRequest request) throws Exception {
+
+        AuthResponse authResponse = authService.signing(request);
+        
+        return ResponseEntity.ok(authResponse);
 
     }
 }

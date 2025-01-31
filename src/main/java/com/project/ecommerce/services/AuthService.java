@@ -1,13 +1,16 @@
 package com.project.ecommerce.services;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +22,8 @@ import com.project.ecommerce.entities.Verification;
 import com.project.ecommerce.repository.CartRepository;
 import com.project.ecommerce.repository.UserRepository;
 import com.project.ecommerce.repository.VerificationRepository;
+import com.project.ecommerce.requests.LoginRequest;
+import com.project.ecommerce.responses.AuthResponse;
 import com.project.ecommerce.responses.SignupRequest;
 import com.project.ecommerce.utils.OtpUtil;
 
@@ -34,6 +39,7 @@ public class AuthService {
     private final JwtProvider jwtProvider;
     private final VerificationRepository verificationRepository;
     private final EmailService emailService;
+    private final CustomUserService customUserService;
 
     public void sentLoginOtp(String email) throws Exception {
         String SIGNING_PREFIX = "signin_";
@@ -61,9 +67,9 @@ public class AuthService {
         verification.setEmail(email);
         verificationRepository.save(verification);
 
-        String subject = "X Login/Signup One Time Password "; // it ll be change!
+        String subject = "SwiftCart Login/Signup One Time Password "; // it ll be change!
 
-        String text = "your otp is - " + otp;
+        String text = "Your One Time Password is - " + otp+"\n Have a good day. Enjoy it:)";
 
         emailService.sendVerificationOtpMail(email, otp, subject, text);
 
@@ -107,4 +113,46 @@ public class AuthService {
         return jwtProvider.generateToken(authentication);
     }
 
+    public AuthResponse signing(LoginRequest req){
+        String username = req.getEmail();
+
+        String otp = req.getOtp();
+
+        Authentication authentication = authenticate(username, otp);
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        String token = jwtProvider.generateToken(authentication);
+
+        AuthResponse authResponse = new AuthResponse();
+
+        authResponse.setJwt(token);
+
+        authResponse.setMessage("Login Successfully!");
+
+        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+
+        String roleName = authorities.isEmpty()?null:authorities.iterator().next().getAuthority();
+
+        authResponse.setRole(USER_ROLE.valueOf(roleName));
+
+
+        return authResponse;
+    }
+
+    private Authentication authenticate(String username,String otp){
+
+        UserDetails userDetails=customUserService.loadUserByUsername(username);
+
+        if (userDetails==null) {
+            throw new BadCredentialsException("Invalid mail or password!");
+        }
+        Verification verification = verificationRepository.findByEmail(username);
+
+        if (verification==null || ! verification.getOtp().equals(otp)) {
+            throw new BadCredentialsException("Wrong OTP");
+        }
+        return new UsernamePasswordAuthenticationToken(userDetails,null, userDetails.getAuthorities());
+         
+
+    }
 }

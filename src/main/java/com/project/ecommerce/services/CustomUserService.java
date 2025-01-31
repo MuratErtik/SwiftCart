@@ -18,8 +18,9 @@ import com.project.ecommerce.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 
-@RequiredArgsConstructor
+
 @Service
+@RequiredArgsConstructor
 public class CustomUserService implements UserDetailsService{
 
     private final UserRepository userRepository;
@@ -54,7 +55,7 @@ public class CustomUserService implements UserDetailsService{
             role=USER_ROLE.ROLE_CUSTOMER;
         }
         List<GrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority("ROLE_"+role));
+        authorities.add(new SimpleGrantedAuthority(role.toString()));
        
 
         return new org.springframework.security.core.userdetails.User(email, password, authorities);
