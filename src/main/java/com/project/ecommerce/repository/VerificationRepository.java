@@ -6,5 +6,6 @@ import com.project.ecommerce.entities.Verification;
 
 public interface VerificationRepository  extends JpaRepository<Verification,Long>{
     Verification findByEmail(String email);
+    Verification findByOtp(String otp);
 
 }
