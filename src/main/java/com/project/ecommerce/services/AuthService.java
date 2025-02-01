@@ -17,9 +17,11 @@ import org.springframework.stereotype.Service;
 import com.project.ecommerce.config.JwtProvider;
 import com.project.ecommerce.domain.USER_ROLE;
 import com.project.ecommerce.entities.Cart;
+import com.project.ecommerce.entities.Seller;
 import com.project.ecommerce.entities.User;
 import com.project.ecommerce.entities.Verification;
 import com.project.ecommerce.repository.CartRepository;
+import com.project.ecommerce.repository.SellerRepository;
 import com.project.ecommerce.repository.UserRepository;
 import com.project.ecommerce.repository.VerificationRepository;
 import com.project.ecommerce.requests.LoginRequest;
@@ -40,18 +42,29 @@ public class AuthService {
     private final VerificationRepository verificationRepository;
     private final EmailService emailService;
     private final CustomUserService customUserService;
+    private final SellerRepository sellerRepository;
 
-    public void sentLoginOtp(String email) throws Exception {
+    public void sentLoginOtp(String email, USER_ROLE role) throws Exception {
         String SIGNING_PREFIX = "signin_";
 
         if (email.startsWith(SIGNING_PREFIX)) {
             email = email.substring(SIGNING_PREFIX.length());
 
-            User user = userRepository.findByEmail(email);
+            if (role == USER_ROLE.ROLE_SELLER) {
+                Seller seller = sellerRepository.findByEmail(email);
+                System.out.println(email);
+                if (seller == null) {
+                    throw new Exception("seller not exist  with provided email!");
+                }
+            } else {
 
-            if (user == null) {
-                throw new Exception("user not exist  with provided email!");
+                User user = userRepository.findByEmail(email);
+
+                if (user == null) {
+                    throw new Exception("user not exist  with provided email!");
+                }
             }
+
         }
         Verification isExist = verificationRepository.findByEmail(email);
 
@@ -67,9 +80,9 @@ public class AuthService {
         verification.setEmail(email);
         verificationRepository.save(verification);
 
-        String subject = "SwiftCart Login/Signup One Time Password "; // it ll be change!
+        String subject = "SwiftCart Login/Signup One Time Password ";
 
-        String text = "Your One Time Password is - " + otp+"\n Have a good day. Enjoy it:)";
+        String text = "Your One Time Password is - " + otp + "\n Have a good day. Enjoy it:)";
 
         emailService.sendVerificationOtpMail(email, otp, subject, text);
 
@@ -113,7 +126,7 @@ public class AuthService {
         return jwtProvider.generateToken(authentication);
     }
 
-    public AuthResponse signing(LoginRequest req){
+    public AuthResponse signing(LoginRequest req) {
         String username = req.getEmail();
 
         String otp = req.getOtp();
@@ -131,28 +144,26 @@ public class AuthService {
 
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
 
-        String roleName = authorities.isEmpty()?null:authorities.iterator().next().getAuthority();
+        String roleName = authorities.isEmpty() ? null : authorities.iterator().next().getAuthority();
 
         authResponse.setRole(USER_ROLE.valueOf(roleName));
-
 
         return authResponse;
     }
 
-    private Authentication authenticate(String username,String otp){
+    private Authentication authenticate(String username, String otp) {
 
-        UserDetails userDetails=customUserService.loadUserByUsername(username);
+        UserDetails userDetails = customUserService.loadUserByUsername(username);
 
-        if (userDetails==null) {
+        if (userDetails == null) {
             throw new BadCredentialsException("Invalid mail or password!");
         }
         Verification verification = verificationRepository.findByEmail(username);
 
-        if (verification==null || ! verification.getOtp().equals(otp)) {
+        if (verification == null || !verification.getOtp().equals(otp)) {
             throw new BadCredentialsException("Wrong OTP");
         }
-        return new UsernamePasswordAuthenticationToken(userDetails,null, userDetails.getAuthorities());
-         
+        return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
 
     }
 }
