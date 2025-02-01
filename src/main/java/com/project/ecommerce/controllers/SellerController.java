@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.project.ecommerce.config.JwtProvider;
 import com.project.ecommerce.domain.AccountStatus;
 import com.project.ecommerce.entities.Seller;
 import com.project.ecommerce.entities.Verification;
@@ -37,7 +36,6 @@ public class SellerController {
     private final SellerService sellerService;
     private final VerificationRepository verificationRepository;
     private final AuthService authService;
-    private final JwtProvider jwtProvider;
 
     private final EmailService emailService;
 
