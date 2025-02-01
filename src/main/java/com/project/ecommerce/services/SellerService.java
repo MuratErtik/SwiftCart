@@ -157,4 +157,10 @@ public class SellerService {
         return sellerRepository.save(seller);
     }
 
+    public Seller getSellerByProfile(String jwt) throws Exception {
+        String email = jwtProvider.getEmailFromJwtToken(jwt);
+        return this.getSellerByEmail(email);
+        
+    }
+
 }
