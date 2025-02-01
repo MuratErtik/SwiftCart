@@ -18,7 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.project.ecommerce.domain.AccountStatus;
 import com.project.ecommerce.entities.Seller;
 import com.project.ecommerce.entities.Verification;
- import com.project.ecommerce.repository.VerificationRepository;
+import com.project.ecommerce.exceptions.SellerException;
+import com.project.ecommerce.repository.VerificationRepository;
 import com.project.ecommerce.requests.LoginRequest;
 import com.project.ecommerce.responses.AuthResponse;
 import com.project.ecommerce.services.AuthService;
@@ -26,6 +27,7 @@ import com.project.ecommerce.services.EmailService;
 import com.project.ecommerce.services.SellerService;
 import com.project.ecommerce.utils.OtpUtil;
 
+import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -40,7 +42,7 @@ public class SellerController {
     private final EmailService emailService;
 
     @PostMapping("/login")
-    public ResponseEntity<AuthResponse> loginSeller(@RequestBody LoginRequest loginRequest) throws Exception {
+    public ResponseEntity<AuthResponse> loginSeller(@RequestBody LoginRequest loginRequest) throws SellerException {
 
         String otp = loginRequest.getOtp();
         String email = loginRequest.getEmail();
@@ -54,13 +56,13 @@ public class SellerController {
     }
 
     @PatchMapping("/verify/{otp}")
-    public ResponseEntity<Seller> verifySellerEmail(@PathVariable String otp) throws Exception {
+    public ResponseEntity<Seller> verifySellerEmail(@PathVariable String otp) throws SellerException {
 
         Verification verification = verificationRepository.findByOtp(otp);
 
         if (verification == null || !verification.getOtp().equals(otp)) {
 
-            throw new Exception("Wrong OTP!");
+            throw new SellerException("Wrong OTP!");
         }
 
         Seller seller = sellerService.verifyMail(verification.getEmail(), otp);
@@ -70,7 +72,7 @@ public class SellerController {
     }
 
     @PostMapping
-    public ResponseEntity<Seller> createSeller(@RequestBody Seller seller) throws Exception {
+    public ResponseEntity<Seller> createSeller(@RequestBody Seller seller) throws SellerException,MessagingException {
         Seller sellerToSave = sellerService.createSeller(seller);
 
         String otp = OtpUtil.generateOtp();
@@ -88,7 +90,7 @@ public class SellerController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Seller> getSellerById(@PathVariable Long id) throws Exception{
+    public ResponseEntity<Seller> getSellerById(@PathVariable Long id) throws SellerException{
 
         Seller seller = sellerService.getSellerById(id);
 
@@ -111,14 +113,14 @@ public class SellerController {
     }
 
     @PatchMapping
-    public ResponseEntity<Seller> updateSeller(@RequestHeader("Authorization") String jwt, @RequestBody Seller seller) throws Exception{
+    public ResponseEntity<Seller> updateSeller(@RequestHeader("Authorization") String jwt, @RequestBody Seller seller) throws SellerException{
         Seller profile = sellerService.getSellerByProfile(jwt);
         Seller sellerToUpdate = sellerService.updateSeller(profile.getId(), seller);
         return ResponseEntity.ok(sellerToUpdate);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteSeller(@PathVariable Long id) throws Exception{
+    public ResponseEntity<Void> deleteSeller(@PathVariable Long id) throws SellerException{
 
         sellerService.deleteSeller(id);
 

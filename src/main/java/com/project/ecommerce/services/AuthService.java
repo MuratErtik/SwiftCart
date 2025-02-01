@@ -20,6 +20,7 @@ import com.project.ecommerce.entities.Cart;
 import com.project.ecommerce.entities.Seller;
 import com.project.ecommerce.entities.User;
 import com.project.ecommerce.entities.Verification;
+import com.project.ecommerce.exceptions.SellerException;
 import com.project.ecommerce.repository.CartRepository;
 import com.project.ecommerce.repository.SellerRepository;
 import com.project.ecommerce.repository.UserRepository;
@@ -29,6 +30,7 @@ import com.project.ecommerce.responses.AuthResponse;
 import com.project.ecommerce.responses.SignupRequest;
 import com.project.ecommerce.utils.OtpUtil;
 
+import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -44,7 +46,7 @@ public class AuthService {
     private final CustomUserService customUserService;
     private final SellerRepository sellerRepository;
 
-    public void sentLoginOtp(String email, USER_ROLE role) throws Exception {
+    public void sentLoginOtp(String email, USER_ROLE role) throws SellerException,MessagingException {
         String SIGNING_PREFIX = "signin_";
 
         if (email.startsWith(SIGNING_PREFIX)) {
@@ -54,14 +56,14 @@ public class AuthService {
                 Seller seller = sellerRepository.findByEmail(email);
                 System.out.println(email);
                 if (seller == null) {
-                    throw new Exception("seller not exist  with provided email!");
+                    throw new SellerException("seller not exist  with provided email!");
                 }
             } else {
 
                 User user = userRepository.findByEmail(email);
 
                 if (user == null) {
-                    throw new Exception("user not exist  with provided email!");
+                    throw new SellerException("user not exist  with provided email!");
                 }
             }
 
@@ -88,12 +90,12 @@ public class AuthService {
 
     }
 
-    public String createUser(SignupRequest request) throws Exception {
+    public String createUser(SignupRequest request) throws SellerException {
 
         Verification verification = verificationRepository.findByEmail(request.getEmail());
 
         if (verification == null || !verification.getOtp().equals(request.getOtp())) {
-            throw new Exception("Wrong otp!");
+            throw new SellerException("Wrong otp!");
         }
 
         User user = userRepository.findByEmail(request.getEmail());
@@ -126,7 +128,7 @@ public class AuthService {
         return jwtProvider.generateToken(authentication);
     }
 
-    public AuthResponse signing(LoginRequest req) throws Exception {
+    public AuthResponse signing(LoginRequest req) throws SellerException {
         String username = req.getEmail();
 
         String otp = req.getOtp();
@@ -151,7 +153,7 @@ public class AuthService {
         return authResponse;
     }
 
-    private Authentication authenticate(String username, String otp) throws Exception {
+    private Authentication authenticate(String username, String otp) throws SellerException {
 
         UserDetails userDetails = customUserService.loadUserByUsername(username);
 
@@ -167,7 +169,7 @@ public class AuthService {
         Verification verification = verificationRepository.findByEmail(username);
 
         if (verification == null || !verification.getOtp().equals(otp)) {
-            throw new Exception("Wrong OTP");
+            throw new SellerException("Wrong OTP");
         }
         return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
 

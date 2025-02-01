@@ -10,6 +10,7 @@ import com.project.ecommerce.domain.AccountStatus;
 import com.project.ecommerce.domain.USER_ROLE;
 import com.project.ecommerce.entities.Address;
 import com.project.ecommerce.entities.Seller;
+import com.project.ecommerce.exceptions.SellerException;
 import com.project.ecommerce.repository.AddressRepository;
 import com.project.ecommerce.repository.SellerRepository;
 
@@ -24,7 +25,7 @@ public class SellerService {
     private final PasswordEncoder passwordEncoder;
     private final AddressRepository addressRepository;
 
-    public Seller getSellerRepository(String jwt) throws Exception {
+    public Seller getSellerRepository(String jwt) throws SellerException {
 
         String email = jwtProvider.getEmailFromJwtToken(jwt);
 
@@ -32,24 +33,24 @@ public class SellerService {
 
     }
 
-    public Seller getSellerByEmail(String email) throws Exception {
+    public Seller getSellerByEmail(String email) throws SellerException {
 
         Seller seller = sellerRepository.findByEmail(email);
 
         if (seller == null) {
-            throw new Exception("Seller could not find with email -> " + email);
+            throw new SellerException("Seller could not find with email -> " + email);
         }
 
         return seller;
 
     }
 
-    public Seller createSeller(Seller seller) throws Exception {
+    public Seller createSeller(Seller seller) throws SellerException {
 
         Seller existSeller = sellerRepository.findByEmail(seller.getEmail());
 
         if (existSeller != null) {
-            throw new Exception("Seller already exist please provide different email!");
+            throw new SellerException("Seller already exist please provide different email!");
         }
         Address addressToSave = addressRepository.save(seller.getPickupAddress());
 
@@ -75,9 +76,9 @@ public class SellerService {
 
     }
 
-    public Seller getSellerById(Long id) throws Exception {
+    public Seller getSellerById(Long id) throws SellerException {
         return sellerRepository.findById(id)
-                .orElseThrow(() -> new Exception("Seller could not find with id -> " + id.toString()));
+                .orElseThrow(() -> new SellerException("Seller could not find with id -> " + id.toString()));
 
     }
 
@@ -87,7 +88,7 @@ public class SellerService {
 
     }
 
-    public Seller updateSeller(Long id, Seller seller) throws Exception {
+    public Seller updateSeller(Long id, Seller seller) throws SellerException {
         Seller existSeller = this.getSellerById(id);
 
         if (seller.getSellerName() != null) {
@@ -135,14 +136,14 @@ public class SellerService {
         return sellerRepository.save(existSeller);
     }
 
-    public void deleteSeller(long id) throws Exception {
+    public void deleteSeller(long id) throws SellerException {
         Seller seller = sellerRepository.findById(id)
-                .orElseThrow(() -> new Exception("Seller could not find with id -> " + id));
+                .orElseThrow(() -> new SellerException("Seller could not find with id -> " + id));
 
         sellerRepository.delete(seller);
     }
 
-    public Seller verifyMail(String email, String otp) throws Exception {
+    public Seller verifyMail(String email, String otp) throws SellerException {
 
         Seller seller = getSellerByEmail(email);
         seller.setEmailVerified(true);
@@ -150,14 +151,14 @@ public class SellerService {
 
     }
 
-    public Seller updateSellerAccountStatus(Long sellerId, AccountStatus status ) throws Exception{
+    public Seller updateSellerAccountStatus(Long sellerId, AccountStatus status ) throws SellerException{
 
         Seller seller = this.getSellerById(sellerId);
         seller.setAccountStatus(status);
         return sellerRepository.save(seller);
     }
 
-    public Seller getSellerByProfile(String jwt) throws Exception {
+    public Seller getSellerByProfile(String jwt) throws SellerException {
         String email = jwtProvider.getEmailFromJwtToken(jwt);
         return this.getSellerByEmail(email);
         
