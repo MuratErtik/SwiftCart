@@ -3,9 +3,11 @@ package com.project.ecommerce.services;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Predicate;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +20,7 @@ import com.project.ecommerce.repository.ProductRepository;
 import com.project.ecommerce.requests.CreateProductRequest;
 
 import jakarta.persistence.criteria.Join;
+import jakarta.persistence.criteria.Predicate;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -114,21 +117,62 @@ public class ProductService {
 
     }
 
-    public List<Product> searchProduct(){
+    public List<Product> searchProduct() {
 
         return List.of();
     }
 
-    // public Page<Product> getAllProduct(String category,String brand,String colors,String sizes,Integer minPrice, 
-    //                                     Integer maxPrice,Integer minDiscount,String sort,String stock,Integer pageNumber){
-                                        
-    //     Specification<Product> spec = (root,query,criteriaBuilder) -> {
-    //         List<Predicate> predicates = new ArrayList<>();
+    public Page<Product> getAllProduct(String category, String brand, String colors, String sizes, Integer minPrice,
+            Integer maxPrice, Integer minDiscount, String sort, String stock, Integer pageNumber) {
 
-    //         if (category==null) {
-    //             Join<Product,Category> categoryJoin = root.join("category");
-    //             predicates.add((Predicate) criteriaBuilder.equal(categoryJoin.get("categoryId"), category));
-    //         }
-    //     };
-    // }
+        Specification<Product> spec = (root, query, criteriaBuilder) -> {
+            List<Predicate> predicates = new ArrayList<>();
+
+            if (category != null) {
+                Join<Product, Category> categoryJoin = root.join("category");
+                predicates.add(criteriaBuilder.equal(categoryJoin.get("categoryId"), category));
+            }
+
+            if (colors != null && !colors.isEmpty()) {
+                predicates.add(criteriaBuilder.equal(root.get("color"), colors));
+            }
+            if (sizes != null && !sizes.isEmpty()) {
+                predicates.add(criteriaBuilder.equal(root.get("size"), sizes));
+            }
+            if (minPrice != null) {
+                predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("sellingPrice"), minPrice));
+            }
+            if (maxPrice != null) {
+                predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get("sellingPrice"), maxPrice));
+            }
+            if (minDiscount != null) {
+                predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("discountPercent"), minDiscount));
+            }
+
+            if ("in_stock".equals(stock)) {
+                predicates.add(criteriaBuilder.greaterThan(root.get("stock"), 0));
+            } else if ("out_of_stock".equals(stock)) {
+                predicates.add(criteriaBuilder.equal(root.get("stock"), 0));
+            }
+
+            return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
+        };
+
+        Pageable pageable;
+
+        if ("price_low".equals(sort)) {
+            pageable = PageRequest.of(pageNumber != null ? pageNumber : 0, 10, Sort.by("sellingPrice").ascending());
+        } else if ("price_high".equals(sort)) {
+            pageable = PageRequest.of(pageNumber != null ? pageNumber : 0, 10, Sort.by("sellingPrice").descending());
+        } else {
+            pageable = PageRequest.of(pageNumber != null ? pageNumber : 0, 10, Sort.unsorted());
+        }
+
+        return productRepository.findAll(spec, pageable);
+    }
+
+    public List<Product> getProductBySellerId(Long sellerId){
+        return productRepository.findBySellerId(sellerId);
+    }
+    
 }
