@@ -117,9 +117,9 @@ public class ProductService {
 
     }
 
-    public List<Product> searchProduct() {
+    public List<Product> searchProduct(String query) {
 
-        return List.of();
+        return productRepository.searchProducts(query);
     }
 
     public Page<Product> getAllProduct(String category, String brand, String colors, String sizes, Integer minPrice,
