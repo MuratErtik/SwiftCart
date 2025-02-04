@@ -49,6 +49,18 @@ public class GlobalException {
 
         return new ResponseEntity<>(errorDetail,HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(OrderException.class)
+    public ResponseEntity<ErrorDetail> orderExceptionHandler(OrderException oe , WebRequest webRequest){
+
+        ErrorDetail errorDetail = new ErrorDetail();
+        errorDetail.setError(oe.getMessage());
+        errorDetail.setDetails(webRequest.getDescription(false));
+        errorDetail.setTimestamp(LocalDateTime.now());
+
+        return new ResponseEntity<>(errorDetail,HttpStatus.BAD_REQUEST);
+
+    }
 }
 
 
