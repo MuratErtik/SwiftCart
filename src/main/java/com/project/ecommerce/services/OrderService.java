@@ -134,6 +134,11 @@ public class OrderService {
 
     public OrderItem findById(Long id) throws OrderException{
 
+
         return orderItemRepository.findById(id).orElseThrow(() -> new OrderException("Order item does not exist!"));
+    }
+    
+    public OrderItem findOrderItemById(Long itemId) throws OrderException{
+        return orderItemRepository.findById(itemId).orElseThrow(() -> new OrderException("Item not found in Order with id -> "+itemId.toString()));
     }
 }
