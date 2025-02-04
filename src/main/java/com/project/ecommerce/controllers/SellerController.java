@@ -15,10 +15,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.project.ecommerce.config.JwtProvider;
 import com.project.ecommerce.domain.AccountStatus;
 import com.project.ecommerce.entities.Seller;
+import com.project.ecommerce.entities.SellerReport;
 import com.project.ecommerce.entities.Verification;
 import com.project.ecommerce.exceptions.SellerException;
+import com.project.ecommerce.repository.SellerReportRepository;
 import com.project.ecommerce.repository.VerificationRepository;
 import com.project.ecommerce.requests.LoginRequest;
 import com.project.ecommerce.responses.AuthResponse;
@@ -40,6 +43,10 @@ public class SellerController {
     private final AuthService authService;
 
     private final EmailService emailService;
+
+    private final JwtProvider jwtProvider;
+
+    private final SellerReportRepository sellerReportRepository;
 
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> loginSeller(@RequestBody LoginRequest loginRequest) throws SellerException {
@@ -127,4 +134,17 @@ public class SellerController {
         return ResponseEntity.noContent().build();
     }
 
+    @GetMapping("/report")
+    public ResponseEntity<SellerReport> getSellerReport(@RequestHeader("Authorization") String jwt) throws SellerException{
+
+        String email = jwtProvider.getEmailFromJwtToken(jwt);
+
+        Seller seller = sellerService.getSellerByEmail(email);
+
+        SellerReport sellerReport = sellerReportRepository.findBySellerId(seller.getId());
+
+        return new ResponseEntity<>(sellerReport,HttpStatus.ACCEPTED);
+
+
+    }
 }
