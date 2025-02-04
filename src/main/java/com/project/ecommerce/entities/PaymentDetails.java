@@ -1,6 +1,13 @@
 package com.project.ecommerce.entities;
 
+import com.project.ecommerce.domain.PaymentStatus;
+
+import lombok.Data;
+
+@Data
 public class PaymentDetails {
-    // i ll lookup later 2.21.43
+    private String paymentId;
+
+    private PaymentStatus status;
 
 }
