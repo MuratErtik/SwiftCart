@@ -82,4 +82,14 @@ public class GlobalException {
         return new ResponseEntity<>(errorDetail, HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(WishlistException.class)
+    public ResponseEntity<ErrorDetail> WishlistException(WishlistException we,WebRequest webRequest){
+        ErrorDetail errorDetail = new ErrorDetail();
+        errorDetail.setError(we.getMessage());
+        errorDetail.setDetails(webRequest.getDescription(false));
+        errorDetail.setTimestamp(LocalDateTime.now());
+
+        return new ResponseEntity<>(errorDetail, HttpStatus.BAD_REQUEST);
+    }
+
 }
