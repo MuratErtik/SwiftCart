@@ -92,4 +92,15 @@ public class GlobalException {
         return new ResponseEntity<>(errorDetail, HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(ReviewException.class)
+    public ResponseEntity<ErrorDetail> ReviewExceptionHandler(ReviewException re, WebRequest webRequest){
+
+        ErrorDetail errorDetail = new ErrorDetail();
+        errorDetail.setError(re.getMessage());
+        errorDetail.setDetails(webRequest.getDescription(false));
+        errorDetail.setTimestamp(LocalDateTime.now());
+
+        return new ResponseEntity<>(errorDetail, HttpStatus.BAD_REQUEST);
+
+    }
 }
