@@ -72,4 +72,14 @@ public class GlobalException {
 
     }
 
+    @ExceptionHandler(TransactionException.class)
+    public ResponseEntity<ErrorDetail> transactionException(TransactionException te,WebRequest webRequest){
+        ErrorDetail errorDetail = new ErrorDetail();
+        errorDetail.setError(te.getMessage());
+        errorDetail.setDetails(webRequest.getDescription(false));
+        errorDetail.setTimestamp(LocalDateTime.now());
+
+        return new ResponseEntity<>(errorDetail, HttpStatus.BAD_REQUEST);
+    }
+
 }
