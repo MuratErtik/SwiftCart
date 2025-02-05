@@ -20,6 +20,7 @@ import com.project.ecommerce.responses.PaymentLinkResponse;
 import com.project.ecommerce.services.PaymentService;
 import com.project.ecommerce.services.SellerReportService;
 import com.project.ecommerce.services.SellerService;
+import com.project.ecommerce.services.TransactionService;
 import com.project.ecommerce.services.UserService;
 
 import lombok.RequiredArgsConstructor;
@@ -34,6 +35,7 @@ public class PaymentController {
     private final UserService userService;
     private final SellerService sellerService;
     private final SellerReportService sellerReportService;
+    private final TransactionService transactionService;
 
     @GetMapping("/{paymentId}")
     public ResponseEntity<ApiResponse> paymentSuccessHandler(@PathVariable Long paymentId,
@@ -50,6 +52,7 @@ public class PaymentController {
 
         if (paymentSuccess) {
             for (Order order : paymentOrders.getOrders()) {
+                transactionService.createTransaction(order);
                 Seller seller = sellerService.getSellerById(order.getSellerId());
                 SellerReport report = sellerReportService.getSellerReport(seller);
                 report.setTotalOrders(report.getTotalOrders() + 1);
