@@ -21,6 +21,7 @@ import com.project.ecommerce.entities.Address;
 import com.project.ecommerce.entities.Cart;
 import com.project.ecommerce.entities.Order;
 import com.project.ecommerce.entities.OrderItem;
+import com.project.ecommerce.entities.PaymentOrders;
 import com.project.ecommerce.entities.Seller;
 import com.project.ecommerce.entities.SellerReport;
 import com.project.ecommerce.entities.User;
@@ -28,6 +29,7 @@ import com.project.ecommerce.exceptions.OrderException;
 import com.project.ecommerce.responses.PaymentLinkResponse;
 import com.project.ecommerce.services.CartService;
 import com.project.ecommerce.services.OrderService;
+import com.project.ecommerce.services.PaymentService;
 import com.project.ecommerce.services.SellerReportService;
 import com.project.ecommerce.services.SellerService;
 import com.project.ecommerce.services.UserService;
@@ -51,6 +53,8 @@ public class OrderController {
 
     private final SellerReportService sellerReportService;
 
+    private final PaymentService paymentService;
+
     
 
     @PostMapping
@@ -66,7 +70,15 @@ public class OrderController {
 
         Set<Order> orders = orderService.createOrder(user, shippingAddress, cart);
 
+        PaymentOrders paymentOrder = paymentService.createOrder(user, orders);
+
         PaymentLinkResponse res = new PaymentLinkResponse();
+
+        if (paymentMethod.equals(PaymentMethod.STRIPE)) {
+            String paymentUrl = paymentService.createStripePaymentLink(user, paymentOrder.getAmount(),paymentOrder.getId());
+            res.setPayment_link_url(paymentUrl);
+            
+        }
 
         return new ResponseEntity<>(res, HttpStatus.OK);
 

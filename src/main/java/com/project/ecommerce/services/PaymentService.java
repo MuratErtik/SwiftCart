@@ -75,13 +75,13 @@ public class PaymentService {
                                 .setProductData(
                                         SessionCreateParams.LineItem.PriceData.ProductData
                                                 .builder().setName("SwiftCart Payment")
-                                                .build())
-                                .build()
+                                                .build()
+                                ).build()
 
                         ).build()
 
-                )
-                .build();
+                ).build();
+                
 
         Session session = Session.create(params);
         return session.getUrl();
