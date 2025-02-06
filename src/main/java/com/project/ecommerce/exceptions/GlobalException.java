@@ -113,4 +113,16 @@ public class GlobalException {
 
         return new ResponseEntity<>(errorDetail, HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(HomeCategoryException.class)
+    public ResponseEntity<ErrorDetail> HomeCategoryExceptionHandler(HomeCategoryException hce, WebRequest webRequest){
+
+        ErrorDetail errorDetail = new ErrorDetail();
+        errorDetail.setError(hce.getMessage());
+        errorDetail.setDetails(webRequest.getDescription(false));
+        errorDetail.setTimestamp(LocalDateTime.now());
+
+        return new ResponseEntity<>(errorDetail, HttpStatus.BAD_REQUEST);
+    }
+    
 }
