@@ -1,7 +1,7 @@
 export const mainCategory = [
     {
         name: "Men",
-        categoryid: "men",
+        categoryId: "men",
         level: 1,
         levelTwoCategory: [
             {
@@ -39,7 +39,7 @@ export const mainCategory = [
     },
     {
         name: "Women",
-        categoryid: "women",
+        categoryId: "women",
         level: 1,
         levelTwoCategory: [
             {
