@@ -20,11 +20,11 @@ const Navbar = () => {
                 <div className="flex item-center justify-between px-5 lg:px-20 h-[70px] border-b">
                     <div className="flex items-center gap-9">
                         <div className="flex items-center gap-2">
-                            <IconButton>
-                                <MenuIcon>
+                            {!isLarge && <IconButton>
+                                <MenuIcon/>
 
-                                </MenuIcon>
-                            </IconButton>
+                                
+                            </IconButton>}
                             <h1 className="logo cursor-pointer text-lg md:text-2xl text-[#009FFD]">
                                 SwiftCart
                             </h1>
