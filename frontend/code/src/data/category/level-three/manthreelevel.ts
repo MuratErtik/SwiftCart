@@ -1,4 +1,4 @@
-export const menthreelevel = [
+export const manthreelevel = [
     {
         "name": "TShirts",
         "categoryId": "men_t_shirts",
