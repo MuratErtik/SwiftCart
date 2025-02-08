@@ -6,6 +6,10 @@ import Navbar from './customer/component/Navbar/Navbar.tsx';
 import customeTheme from './Theme/customTheme.ts';
 import Home from './pages/Home/Home.tsx';
 import Deal from './pages/Home/Deal/Deal.tsx';
+import Product from './pages/Product/Product.tsx';
+import { BrowserRouter } from "react-router-dom";
+import React from "react";
+import ReactDOM from "react-dom";
 
 export default function App() {
   return (
@@ -15,7 +19,8 @@ export default function App() {
 
         <div>
           <Navbar />
-          <Home/>
+          {/* <Home/> */}
+          <Product/>
           
         </div>
 
