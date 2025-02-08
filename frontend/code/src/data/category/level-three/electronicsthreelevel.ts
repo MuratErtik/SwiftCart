@@ -58,5 +58,11 @@ export const electronicsthreelevel = [
         "categoryId": "electronic_smart_watches",
         "parentCategoryName": "Wearables",
         "parentCategoryId": "electronic_wearables"
+    },
+    {
+        "name": "Hp",
+        "categoryId": "hplaptops",
+        "parentCategoryName": "Laptops",
+        "parentCategoryId": "electronic_laptops"
     }
 ];
