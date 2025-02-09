@@ -3,16 +3,22 @@ import FilterSection from "./FilterSection.tsx";
 import { BrowserRouter } from "react-router-dom";
 import ProductCard from "./ProductCard.tsx";
 import { useTheme } from "@emotion/react";
-import { Box, Divider, FormControl, IconButton, InputLabel, MenuItem, Select, useMediaQuery } from "@mui/material";
+import { Box, Divider, FormControl, IconButton, InputLabel, MenuItem, Pagination, Select, useMediaQuery } from "@mui/material";
 import { FilterAlt } from "@mui/icons-material";
 
 const Product = () => {
 
     const theme = useTheme();
     const isLarge = useMediaQuery(theme.breakpoints.up("lg"))
-    const [sort,setSort] = useState()
-    const handleSortChange = (event:any) => {
+    const [sort, setSort] = useState()
+    const [page, setPage] = useState(1);
+    const handleSortChange = (event: any) => {
         setSort(event.target.value)
+    }
+
+    const handlePageChange = (value: number) => {
+        setPage(value)
+
     }
 
     return (
@@ -43,7 +49,7 @@ const Product = () => {
                             }
 
                         </div>
-                        <FormControl size="small" sx={{width:"200px"}}>
+                        <FormControl size="small" sx={{ width: "200px" }}>
                             <InputLabel id="demo-simple-select-label">Price Filter</InputLabel>
                             <Select
                                 labelId="demo-simple-select-label"
@@ -54,7 +60,7 @@ const Product = () => {
                             >
                                 <MenuItem value={"proce_low"}>Price: Low - High</MenuItem>
                                 <MenuItem value={"price_high"}>Price: High - Low</MenuItem>
-                                
+
                             </Select>
                         </FormControl>
 
@@ -63,11 +69,16 @@ const Product = () => {
 
 
                     </div>
-                    <Divider/>
+                    <Divider />
                     <section className='products_section grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-y-5 px-5 justify-center'>
-                        {[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1].map((item) => <ProductCard/>)}
+                        {[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1].map((item) => <ProductCard />)}
                     </section>
+                    <div className=' flex justify-center py-10'>
+                        <Pagination onChange={(e, value) => handlePageChange(value)} count={10} color="primary" variant="outlined" />
+                    </div>
                 </div>
+
+
 
             </div>
 
