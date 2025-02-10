@@ -26,7 +26,7 @@ const Review = () => {
 
                 </div>
             </section>
-            <section>
+            <section className= 'space-y-5 w-full'>
                 {[1,1,1,1,1,1].map((item) => <div className='spyЗ'><Divider/> <ReviewCard/></div>)}
             </section>
         </div>
