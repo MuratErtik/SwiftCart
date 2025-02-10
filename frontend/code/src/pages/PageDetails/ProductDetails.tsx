@@ -10,6 +10,8 @@ import RemoveIcon from '@mui/icons-material/Remove';
 import AddIcon from '@mui/icons-material/Add';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import SimilarProduct from "./SimilarProduct.tsx";
+import ReviewCard from "../Review/ReviewCard.tsx";
 
 const ProductDetails = () => {
     const [quantity, setQuantity] = React.useState(1);
@@ -87,8 +89,23 @@ const ProductDetails = () => {
                         <p>The saree comes with an unstitched blouse piece The blouse worn by the model might be for modelling purpose only.
                             Check the image of the blouse piece to understand how the actual blouse piece looks like.</p>
                     </div>
+                    <div className='mt-12 space-y-5'>
+                        <ReviewCard/>
+                        <Divider/>
+
+                    </div>
                 </section>
 
+            </div>
+
+            <div className='mt-20'>
+                <h1 className="text-lg font-bold">Similar Product</h1>
+                <div className='pt-5'>
+                    <SimilarProduct />
+                    <Divider/>
+
+
+                </div>
             </div>
         </div>
     )

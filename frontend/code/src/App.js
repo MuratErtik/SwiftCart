@@ -11,6 +11,7 @@ import { BrowserRouter } from "react-router-dom";
 import React from "react";
 import ReactDOM from "react-dom";
 import ProductDetails from "./pages/PageDetails/ProductDetails.tsx"
+import Review from './pages/Review/Review.tsx';
 
 export default function App() {
   return (
@@ -22,7 +23,8 @@ export default function App() {
           <Navbar />
           {/* <Home/>
           <Product/> */}
-          <ProductDetails/>
+          {/* <ProductDetails/> */}
+          <Review/>
         </div>
 
       </ThemeProvider>
