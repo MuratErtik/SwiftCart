@@ -10,6 +10,7 @@ import Product from './pages/Product/Product.tsx';
 import { BrowserRouter } from "react-router-dom";
 import React from "react";
 import ReactDOM from "react-dom";
+import ProductDetails from "./pages/PageDetails/ProductDetails.tsx"
 
 export default function App() {
   return (
@@ -19,9 +20,9 @@ export default function App() {
 
         <div>
           <Navbar />
-          {/* <Home/> */}
-          <Product/>
-          
+          {/* <Home/>
+          <Product/> */}
+          <ProductDetails/>
         </div>
 
       </ThemeProvider>
