@@ -12,6 +12,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import ProductDetails from "./pages/PageDetails/ProductDetails.tsx"
 import Review from './pages/Review/Review.tsx';
+import Cart from './pages/Cart/Cart.tsx';
 
 export default function App() {
   return (
@@ -24,7 +25,8 @@ export default function App() {
           {/* <Home/>
           <Product/> */}
           {/* <ProductDetails/> */}
-          <Review/>
+          {/* <Review/> */}
+          <Cart/>
         </div>
 
       </ThemeProvider>
