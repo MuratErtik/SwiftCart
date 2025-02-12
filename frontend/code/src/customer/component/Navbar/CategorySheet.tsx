@@ -9,6 +9,7 @@ import { electronicsthreelevel } from "../../../data/category/level-three/electr
 import { furniturethreelevel } from "../../../data/category/level-three/furniturethreelevel.ts";
 import { Box } from "@mui/material";
 import zIndex from "@mui/material/styles/zIndex";
+import { useNavigate } from "react-router-dom";
 
 
 
@@ -31,7 +32,7 @@ const categoryThree:{[key:string]:any} = {
 }
 
 const CategorySheet = ({selectedCategory, setShowSheet}: any) => {
-
+    const navigation = useNavigate()
     const childcategory = (category: any, parentCategoryId: any) => {
         return category.filter((child: any) => child.parentCategoryId == parentCategoryId)
     }
@@ -46,7 +47,7 @@ const CategorySheet = ({selectedCategory, setShowSheet}: any) => {
                         <p className="text-primary-color mb-5 font-semibold">{item.name}</p>
                         <ul className='space-y-3'>
                             {childcategory(categoryThree[selectedCategory], item.categoryId).map((item:any) => <div>
-                                <li className='hover: text-second-color cursor-pointer'>
+                                <li onClick={()=> navigation("/product/"+item.categoryId)} className='hover: text-second-color cursor-pointer'>
                                     {item.name}
                                 </li>
 

@@ -4,6 +4,7 @@ import { Close, LocalOffer } from "@mui/icons-material";
 import { blue } from "@mui/material/colors";
 import { Button, IconButton, TextField } from "@mui/material";
 import PricingCart from "./PricingCart.tsx";
+import { useNavigate } from "react-router-dom";
 
 const Cart = () => {
     const [couponCode,setCouponCode] = useState("")
@@ -11,6 +12,7 @@ const Cart = () => {
         setCouponCode(e.target.value)
 
     }
+    const navigation = useNavigate();
     return (
 
         <div className='pt-10 px-5 sm:px-10 md:px-60 min-h-screen' >
@@ -45,7 +47,7 @@ const Cart = () => {
                     <div className= 'border rounded-md'>
                         <PricingCart/>
                         <div>
-                            <Button fullWidth variant="contained" sx={{py:"11px"}}>
+                            <Button onClick={() => navigation("/checkout")} fullWidth variant="contained" sx={{py:"11px"}}>
                                 Buy Now
                             </Button>
                         </div>

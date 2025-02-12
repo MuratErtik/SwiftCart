@@ -7,7 +7,7 @@ import customeTheme from './Theme/customTheme.ts';
 import Home from './pages/Home/Home.tsx';
 import Deal from './pages/Home/Deal/Deal.tsx';
 import Product from './pages/Product/Product.tsx';
-import { BrowserRouter } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import React from "react";
 import ReactDOM from "react-dom";
 import ProductDetails from "./pages/PageDetails/ProductDetails.tsx"
@@ -30,7 +30,21 @@ export default function App() {
           {/* <Review/> */}
           {/* <Cart/> */}
           {/* <Checkout/> */}
-          <Account/>
+          {/* <Account/> */}
+          <Routes>
+            <Route path='/' element={<Home/>}/>
+            <Route path='/products/:category' element={<Product/>}/>
+            <Route path='/reviews/:productId' element={<Review/>}/>
+            <Route path='/product-details/:categoryId/:name/:productId' element={<ProductDetails/>}/>
+            <Route path='/cart' element={<Cart/>}/>
+            <Route path='/checkout' element={<Checkout/>}/>
+            <Route path='/account/*' element={<Account/>}/>
+
+           
+
+
+
+          </Routes>
         </div>
 
       </ThemeProvider>

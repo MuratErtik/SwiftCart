@@ -8,6 +8,7 @@ import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import StorefrontIcon from '@mui/icons-material/Storefront';
 import CategorySheet from "./CategorySheet.tsx";
 import {mainCategory} from "../../../data/category/mainCategoruy.ts";
+import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
 
@@ -15,6 +16,7 @@ const Navbar = () => {
     const isLarge = useMediaQuery(theme.breakpoints.up("lg"));
     const [selectedcategory,setselectedCategory] = useState("men");
     const [showCategorySheet,setShowCategorySheet] = useState(false);
+    const navigation = useNavigate();
 
     return (
 
@@ -29,7 +31,7 @@ const Navbar = () => {
 
                                 
                             </IconButton>}
-                            <h1 className="logo cursor-pointer text-lg md:text-2xl text-[#009FFD]">
+                            <h1 onClick={()=>navigation("/")} className="logo cursor-pointer text-lg md:text-2xl text-[#009FFD]">
                                 SwiftCart
                             </h1>
                         </div>
@@ -47,7 +49,7 @@ const Navbar = () => {
                             <SearchIcon sx={{ fontSize: 25 }}></SearchIcon>
                         </IconButton>
                         {
-                            false ? <Button className='flex items-center gap-2'>
+                            true ?  <Button onClick={()=> navigation("/account/orders")} className='flex items-center gap-2'>
                                 <Avatar
                                 sx={{width:25,height:25}}
                                     src="https://cdn1.iconfinder.com/data/icons/user-pictures/100/male3-1024.png"/>
@@ -62,7 +64,7 @@ const Navbar = () => {
                         <IconButton>
                             <FavoriteBorderIcon sx={{ fontSize: 25 }} />
                         </IconButton>
-                        <IconButton>
+                        <IconButton onClick={()=>navigation("/cart")}>
                             <AddShoppingCartIcon sx={{ fontSize: 25 }} className="text-gray-700"></AddShoppingCartIcon>
                         </IconButton>
                         {isLarge && <Button startIcon={<StorefrontIcon />} variant="outlined">

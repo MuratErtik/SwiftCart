@@ -1,6 +1,6 @@
 import { Divider } from "@mui/material";
 import React from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import Order from "./Order.tsx";
 import OrderDetails from "./OrderDetails.tsx";
 import UserDetails from "./UserDetails.tsx";
@@ -8,7 +8,7 @@ import Address from "./Address.tsx";
 
 const menu = [
     { name: "orders", path: "/account/orders" },
-    { name: "profile", path: "/account/profile" },
+    { name: "profile", path: "/account" },
     { name: "Saved Cards", path: "/account/saved-card" },
     { name: "Addresses", path: "/account/addresses" },
     { name: "Logout", path: "/" }
@@ -35,7 +35,18 @@ const Account = () => {
                         ))
                     }
                 </section>
-                <section className='right lg: col-span-2 lg:pl-5 py-5'><Address/></section>
+                <section className='right lg: col-span-2 lg:pl-5 py-5'>
+                    <Routes>
+                        <Route path='/' element={<UserDetails />} />
+                        <Route path='/orders' element={<Order/>}/>
+                        <Route path='/order/:oderId/:orderItemId' element={<OrderDetails/>}/>
+                        <Route path='/addresses' element={<Address/>}/>
+
+
+
+
+                    </Routes>
+                </section>
 
             </div>
         </div>
