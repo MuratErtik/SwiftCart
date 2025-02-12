@@ -13,6 +13,7 @@ import ReactDOM from "react-dom";
 import ProductDetails from "./pages/PageDetails/ProductDetails.tsx"
 import Review from './pages/Review/Review.tsx';
 import Cart from './pages/Cart/Cart.tsx';
+import Checkout from './pages/Checkout/Checkout.tsx';
 
 export default function App() {
   return (
@@ -26,7 +27,8 @@ export default function App() {
           <Product/> */}
           {/* <ProductDetails/> */}
           {/* <Review/> */}
-          <Cart/>
+          {/* <Cart/> */}
+          <Checkout/>
         </div>
 
       </ThemeProvider>
