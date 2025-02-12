@@ -14,6 +14,7 @@ import ProductDetails from "./pages/PageDetails/ProductDetails.tsx"
 import Review from './pages/Review/Review.tsx';
 import Cart from './pages/Cart/Cart.tsx';
 import Checkout from './pages/Checkout/Checkout.tsx';
+import Account from './pages/Account/Account.tsx';
 
 export default function App() {
   return (
@@ -28,7 +29,8 @@ export default function App() {
           {/* <ProductDetails/> */}
           {/* <Review/> */}
           {/* <Cart/> */}
-          <Checkout/>
+          {/* <Checkout/> */}
+          <Account/>
         </div>
 
       </ThemeProvider>
