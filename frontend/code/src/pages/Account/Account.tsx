@@ -4,6 +4,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import Order from "./Order.tsx";
 import OrderDetails from "./OrderDetails.tsx";
 import UserDetails from "./UserDetails.tsx";
+import Address from "./Address.tsx";
 
 const menu = [
     { name: "orders", path: "/account/orders" },
@@ -34,7 +35,7 @@ const Account = () => {
                         ))
                     }
                 </section>
-                <section className='right lg: col-span-2 lg:pl-5 py-5'><UserDetails/></section>
+                <section className='right lg: col-span-2 lg:pl-5 py-5'><Address/></section>
 
             </div>
         </div>
