@@ -6,7 +6,7 @@ import * as Yup from "yup"
 const AddressForm = () => {
     const addressFormSchema = Yup.object().shape({ 
         name:Yup.string().required("Name is required."),
-        mobile:Yup.string().required("Mobile number is required.").matches(/^[6-9]\d{9}$/, "Invalid mobile number"),
+        mobile:Yup.string().required("Mobile number is required.").matches(/^[0-9]\d{9}$/, "Invalid mobile number"),
         address:Yup.string().required("Address is required."),
         city:Yup.string().required("City is required."),
         locality:Yup.string().required("Locality is required."),
@@ -16,7 +16,7 @@ const AddressForm = () => {
     const formik = useFormik({
         initialValues:{
             name:"",
-            mobile:"",
+            mobile:"+90 ",
             address:"",
             city:"",
             locality:""

@@ -1,4 +1,5 @@
-import { Divider } from "@mui/material";
+import { colors, Divider } from "@mui/material";
+import { blue } from "@mui/material/colors";
 import React from "react";
 
 const PricingCart = () => {
@@ -26,8 +27,8 @@ const PricingCart = () => {
 
                 </div>
                 <Divider/>
-                <div className='flex justify-between items-center'>
-                <span>Total</ span>
+                <div className='flex justify-between items-center color-primary'>
+                <span color="blue">Total</ span>
                 <span>768</ span>
 
                 </div>
