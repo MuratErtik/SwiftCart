@@ -67,7 +67,7 @@ const Navbar = () => {
                         <IconButton onClick={()=>navigation("/cart")}>
                             <AddShoppingCartIcon sx={{ fontSize: 25 }} className="text-gray-700"></AddShoppingCartIcon>
                         </IconButton>
-                        {isLarge && <Button startIcon={<StorefrontIcon />} variant="outlined">
+                        {isLarge && <Button onClick={()=> navigation("/become-seller")} startIcon={<StorefrontIcon />} variant="outlined">
                             Become Seller
                         </Button>}
                     </div>

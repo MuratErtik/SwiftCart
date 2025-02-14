@@ -5,8 +5,10 @@ import ShopByCategory from "./ShopByCategory/ShopByCategory.tsx";
 import Deal from "./Deal/Deal.tsx";
 import { Button } from "@mui/material";
 import { Storefront } from "@mui/icons-material";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
+    const navigation = useNavigate();
     return (
         <div>
             <div className= 'space-y-5 1g:space-y-10 relative'>
@@ -27,7 +29,7 @@ const Home = () => {
                     <h1>Sell Your Product</h1>
                     <p className="text-lg md:text-2xl"> With <span className="logo text-50px">SwiftCart</span></p>
                     <div className='pt-6 flex justify-center'>
-                        <Button startIcon={<Storefront/>} variant="contained" size="large">
+                        <Button onClick={()=> navigation("/become-seller")} startIcon={<Storefront/>} variant="contained" size="large">
                             Become Seller
                         </Button>
                     </div>
