@@ -15,6 +15,8 @@ import Review from './pages/Review/Review.tsx';
 import Cart from './pages/Cart/Cart.tsx';
 import Checkout from './pages/Checkout/Checkout.tsx';
 import Account from './pages/Account/Account.tsx';
+import BecomeSeller from './pages/BecomeSeller/BecomeSeller.tsx';
+import SellerDashboard from './seller/pages/sellerdashboard/SellerDashboard.tsx';
 
 export default function App() {
   return (
@@ -31,6 +33,7 @@ export default function App() {
           {/* <Cart/> */}
           {/* <Checkout/> */}
           {/* <Account/> */}
+          {/* <BecomeSeller/> */}
           <Routes>
             <Route path='/' element={<Home/>}/>
             <Route path='/products/:category' element={<Product/>}/>
@@ -39,6 +42,9 @@ export default function App() {
             <Route path='/cart' element={<Cart/>}/>
             <Route path='/checkout' element={<Checkout/>}/>
             <Route path='/account/*' element={<Account/>}/>
+            <Route path='/become-seller' element={<BecomeSeller/>}/>
+            <Route path='/seller/*' element={<SellerDashboard/>}/>
+
 
            
 
