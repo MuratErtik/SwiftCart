@@ -64,5 +64,17 @@ export const electronicsthreelevel = [
         "categoryId": "hplaptops",
         "parentCategoryName": "Laptops",
         "parentCategoryId": "electronic_laptops"
+    },
+    {
+        "name": "Iphone 12",
+        "categoryId": "iphone12",
+        "parentCategoryName": "Mobile Phones",
+        "parentCategoryId": "electronic_mobilephones"
+    },
+    {
+        "name": "Apple Watch",
+        "categoryId": "AppleWatch",
+        "parentCategoryName": "Smartwatches",
+        "parentCategoryId": "electronic_smartwatches"
     }
 ];
