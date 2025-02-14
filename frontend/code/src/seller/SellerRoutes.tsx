@@ -16,7 +16,7 @@ const SellerRoutes = () => {
             <Routes>
                 <Route path="/" element={<Dashboard />} />
                 <Route path='/products' element={<Products />} />
-                <Route path='/add-product' element={<AddProducts />} />
+                <Route path='/add-products' element={<AddProducts />} />
                 <Route path='/orders' element={<Order />} />
                 <Route path='/account' element={<Profile />} />
                 < Route path='/payment' element={<Payment />} />
