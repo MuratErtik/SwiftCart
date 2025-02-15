@@ -1,10 +1,12 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
+import HomeCategoryTable from "./HomeCategoryTable.tsx";
 
 const ElectronicTable = () => {
-    return(
+    return (
         <div>
-           dsds
+            <HomeCategoryTable />
+
         </div>
     )
 }
