@@ -17,6 +17,7 @@ import Checkout from './pages/Checkout/Checkout.tsx';
 import Account from './pages/Account/Account.tsx';
 import BecomeSeller from './pages/BecomeSeller/BecomeSeller.tsx';
 import SellerDashboard from './seller/pages/sellerdashboard/SellerDashboard.tsx';
+import AdminDashboard from './admin/pages/Dashboard/AdminDashboard.tsx';
 
 export default function App() {
   return (
@@ -44,6 +45,8 @@ export default function App() {
             <Route path='/account/*' element={<Account/>}/>
             <Route path='/become-seller' element={<BecomeSeller/>}/>
             <Route path='/seller/*' element={<SellerDashboard/>}/>
+            <Route path='/admin/*' element={<AdminDashboard/>}/>
+
 
 
            
