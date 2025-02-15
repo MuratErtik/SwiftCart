@@ -60,7 +60,7 @@ const AddProducts = () => {
     const handleCloseSnackbar = () => {
         setOpenSnackbar(false);
     }
-    const categoryTwo = [childCategory];dsddsd
+    const categoryTwo = [childCategory];
     const categoryThree = [];
 
 
